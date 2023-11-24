@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Loader from '../components/Loader.jsx';
 import Island from '../models/Island.jsx';
+import Sky from '../models/Sky.jsx';
 
 {
   /*<div className={'absolute top-28 left-0 right-0 z-10 flex items-center justify-center'}>
@@ -36,6 +37,7 @@ const Home = () => {
           {/*<spotLight />*/}
           <hemisphereLight skyColor={'#b1e1ff'} groundColor={'#000000'} intensity={1} />
 
+          <Sky />
           <Island position={islandPosition} scale={islandScale} rotation={islandRotation} />
         </Suspense>
       </Canvas>
