@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const formRef = useRef(null);
@@ -6,10 +7,39 @@ const Contact = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handeChange = e => {
-    e.preventDefault();
+    setForm({ ...form, [e.target.name]: e.target.name });
   };
 
-  const handleFocus = () => {};
+  const handleFocus = e => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    emailjs
+      .send(
+        import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: form.name,
+          to_name: 'Georg',
+          from_email: form.email,
+          to_email: '',
+          message: form.message,
+        },
+        import.meta.env.VITE_APP_EMAILJS_PUBLIC_ID,
+      )
+      .then(() => {
+        setIsLoading(false);
+        // TODO: Show success message
+        // TODO: Hide an alert
+
+        setForm({ name: '', email: '', message: '' });
+      })
+      .catch(error => {
+        setIsLoading(false);
+        console.log(error);
+        // TODO: Show error message
+      });
+  };
 
   const handleBlur = () => {};
 
@@ -17,7 +47,7 @@ const Contact = () => {
 
   return (
     <section className={'relative flex lg:flex-row flex-col max-container'}>
-      <div className={'flex min-w-[50%] flex flex-col'}>
+      <div className={'flex min-w-[50%] flex-col'}>
         <h1 className={'head-text'}>Get in Touch </h1>
 
         <form className={'w-full flex flex-col gap-7 mt-14'} onSubmit={handleSubmit}>
